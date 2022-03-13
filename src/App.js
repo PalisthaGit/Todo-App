@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-
+import Alert from './Alert';
+import List from './List';
 const App = () => {
 
   // hold input from input box
@@ -17,12 +18,10 @@ const App = () => {
   // to display some alert 
   const [alert, setAlert] = useState({ show: false, msg: "" });
 
-  useEffect(()=>{
-    setTimeout(()=>{
-      setAlert({show: false,msg:""})
-    }, 3000)
-  }, [alert])
-
+  const showAlert = (show=false, msg="") => {
+    setAlert(show, msg)
+  }
+  
   const handleSubmit = (e) => {
     // prevents from default actions
     e.preventDefault();
@@ -83,7 +82,7 @@ const App = () => {
         {/* our heading */}
         <h1>Todo List</h1>
         {/* form to take user input */}
-        {alert.show &&  <h5>{alert.msg}</h5>}
+        {alert.show &&  <Alert {...alert} list={list} showAlert={showAlert}/>}
         <form onSubmit={handleSubmit}>
 
           {/* input box */}
@@ -99,21 +98,7 @@ const App = () => {
       {
         (list.length > 0) &&
         (<section>
-          {
-
-            //  looping through list
-            list.map((item) => {
-              //  destructuring item
-              const { id, title } = item;
-              return (
-                // renders todo item 
-                <div>{title}
-                  <button type='button' onClick={() => editItem(id)}>Edit</button>
-                  <button type='button' onClick={() => deleteItem(id)}>Delete</button>
-                </div>
-              );
-            })
-          }
+          <List list={list}  deleteItem = {deleteItem} editItem={editItem} />
           {/* reset todo list */}
           <button className='button' onClick={() => setList([])}>clear</button>
         </section>)
