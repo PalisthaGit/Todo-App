@@ -39,7 +39,7 @@ useEffect(()=>{
      localStorage.setItem('list', JSON.stringify(list));
 },[list])
 const showAlert = (show=false, msg="") => {
-  setAlert(show, msg)
+  setAlert({show, msg})
 }
   const handleSubmit = (e) => {
     // prevents from default actions
@@ -59,7 +59,7 @@ const showAlert = (show=false, msg="") => {
 
         })
       );
-      setAlert({ show:true, msg: "item edited" });
+      showAlert(true, "item edited");
       
       
       
@@ -69,7 +69,7 @@ const showAlert = (show=false, msg="") => {
       const newItem = { id: new Date().getTime().toString(), title: todo };
       // update list
       setList([...list, newItem]);
-      setAlert({ show:true, msg: "item added" });
+      showAlert(true, "item added");
     }
 
 
@@ -90,7 +90,7 @@ const showAlert = (show=false, msg="") => {
     // do not include in list if the item id doesnot match the passed id.
     const di = list.filter((item) => item.id !== id);
     setList(di);
-    setAlert({ show:true, msg: "item deleted" });
+    showAlert(true, "item deleted");
 
   }
   return (
