@@ -1,13 +1,25 @@
 import React, { useState, useEffect } from 'react'
 import Alert from './Alert';
 import List from './List';
+
+
+const getLocalStorage = () =>{
+
+  let list = localStorage.getItem('list');
+  if(list) {
+     return JSON.parse(localStorage.getItem('list'))
+  }
+  else{
+     return [];
+  }
+}
 const App = () => {
 
   // hold input from input box
   const [todo, setTodo] = useState("");
 
   // hold list of todo
-  const [list, setList] = useState([]);
+  const [list, setList] = useState(getLocalStorage());
 
   // to know if we are in editing state
   const [isEditing, setIsEditing] = useState(false);
@@ -18,10 +30,17 @@ const App = () => {
   // to display some alert 
   const [alert, setAlert] = useState({ show: false, msg: "" });
 
-  const showAlert = (show=false, msg="") => {
-    setAlert(show, msg)
-  }
   
+  
+useEffect(()=>{
+  // storing list in browser every time the list changes
+  // list is key and list must be a string
+  // but it  doesnot stay if we referesh
+     localStorage.setItem('list', JSON.stringify(list));
+},[list])
+const showAlert = (show=false, msg="") => {
+  setAlert(show, msg)
+}
   const handleSubmit = (e) => {
     // prevents from default actions
     e.preventDefault();
